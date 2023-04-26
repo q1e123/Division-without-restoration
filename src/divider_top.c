@@ -1,4 +1,4 @@
-#include <genlib.h>  
+#include <genlib.h>
 int operand_size = 8;
 int result_size = 16;
 
@@ -12,9 +12,9 @@ int i;
    GENLIB_LOCON("vss",           IN,           "vss");    
    GENLIB_LOCON("vdde",          IN,          "vdde");   
    GENLIB_LOCON("vsse",          IN,          "vsse");   
-   GENLIB_LOCON("op_a[3:0]",     IN,     "op_a[7:0]");    
-   GENLIB_LOCON("op_b[3:0]",     IN,     "op_b[7:0]");    
-   GENLIB_LOCON("reset",         IN,         "reset");    
+   GENLIB_LOCON("operand_1[7:0]",     IN,     "operand_1[7:0]");    
+   GENLIB_LOCON("operand_2[7:0]",     IN,     "operand_2[7:0]");    
+   GENLIB_LOCON("reset_n",         IN,         "reset_n");    
    GENLIB_LOCON("start",         IN,         "start");    
    GENLIB_LOCON("clk",           IN,           "clk");    
    GENLIB_LOCON("ready",         OUT,        "ready");    
@@ -33,15 +33,15 @@ int i;
    for (i = 0; i < operand_size; i++)  
     GENLIB_LOINS("pi_sp", 
 	GENLIB_NAME("p%d", i),   
- 	GENLIB_NAME("op_a[%d]", i), 
-	GENLIB_NAME("op_aop_a[%d]", i),   
+ 	GENLIB_NAME("operand_1[%d]", i), 
+	GENLIB_NAME("operand_1operand_1[%d]", i),   
         	 "cki", "vdde", "vdd", "vsse", "vss", 0); 
 
    for (i = 0; i < operand_size; i++)  
     GENLIB_LOINS("pi_sp", 
 	GENLIB_NAME("p%d", i + operand_size),   
-        GENLIB_NAME("op_b[%d]", i), 
-	GENLIB_NAME("op_bop_b[%d]", i),   
+        GENLIB_NAME("operand_2[%d]", i), 
+	GENLIB_NAME("operand_2operand_2[%d]", i),   
          	  "cki", "vdde", "vdd", "vsse", "vss", 0);  
    
    for (i = 0; i < result_size; i++)  
@@ -59,7 +59,7 @@ int i;
          "cki", "vdde", "vdd", "vsse", "vss", 0);  
      
    GENLIB_LOINS("pi_sp", "p17",  
-         "reset", "resetreset",  
+         "reset_n", "reset_nreset_n",  
          "cki", "vdde", "vdd", "vsse", "vss", 0);  
      
    GENLIB_LOINS("pck_sp", "p18",  
@@ -71,9 +71,9 @@ int i;
          "cki", "vdde", "vdd", "vsse", "vss", 0);  
      
    GENLIB_LOINS("divider", "divider",
-		"op_aop_a[7:0]", "op_bop_b[7:0]", 
+		"operand_1operand_1[7:0]", "operand_2operand_2[7:0]", 
 		"resultresult[15:0]", 
-   	     	"clock", "resetreset",  	      
+   	     	"clock", "reset_nreset_n",  	      
          	"startstart",  	     
          	"readyready", 
         	"vdd", "vss", 0);  
