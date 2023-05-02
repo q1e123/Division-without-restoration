@@ -1,7 +1,5 @@
-#include <genlib.h>
-int operand_size = 8;
-int result_size = 16;
-
+#include <genlib.h>  
+  
 main()  
 {  
 int i;  
@@ -14,39 +12,39 @@ int i;
    GENLIB_LOCON("vsse",          IN,          "vsse");   
    GENLIB_LOCON("operand_1[7:0]",     IN,     "operand_1[7:0]");    
    GENLIB_LOCON("operand_2[7:0]",     IN,     "operand_2[7:0]");    
-   GENLIB_LOCON("reset_n",         IN,         "reset_n");    
+   GENLIB_LOCON("reset",         IN,         "reset");    
    GENLIB_LOCON("start",         IN,         "start");    
    GENLIB_LOCON("clk",           IN,           "clk");    
    GENLIB_LOCON("ready",         OUT,        "ready");    
    GENLIB_LOCON("result[15:0]",   OUT,  "result[15:0]");    
      
                               
-   GENLIB_LOINS ("pvsse_sp", "p20", "cki", "vdde", "vdd", "vsse", "vss", 0);  
-   GENLIB_LOINS ("pvdde_sp", "p21", "cki", "vdde", "vdd", "vsse", "vss", 0);  
-   GENLIB_LOINS ("pvddeck_sp","p22", "clock", "cki", "vdde", "vdd", "vsse", "vss",0); 
-   GENLIB_LOINS ("pvssi_sp", "p23", "cki", "vdde", "vdd", "vsse", "vss", 0);  
-   GENLIB_LOINS ("pvddi_sp", "p24", "cki", "vdde", "vdd", "vsse", "vss", 0);  
+   GENLIB_LOINS ("pvsse_sp", "p36", "cki", "vdde", "vdd", "vsse", "vss", 0);  
+   GENLIB_LOINS ("pvdde_sp", "p37", "cki", "vdde", "vdd", "vsse", "vss", 0);  
+   GENLIB_LOINS ("pvddeck_sp","p38", "clock", "cki", "vdde", "vdd", "vsse", "vss",0); 
+   GENLIB_LOINS ("pvssi_sp", "p39", "cki", "vdde", "vdd", "vsse", "vss", 0);  
+   GENLIB_LOINS ("pvddi_sp", "p40", "cki", "vdde", "vdd", "vsse", "vss", 0);  
 	
  
   
 
-   for (i = 0; i < operand_size; i++)  
+   for (i = 0; i < 8; i++)  
     GENLIB_LOINS("pi_sp", 
 	GENLIB_NAME("p%d", i),   
  	GENLIB_NAME("operand_1[%d]", i), 
 	GENLIB_NAME("operand_1operand_1[%d]", i),   
         	 "cki", "vdde", "vdd", "vsse", "vss", 0); 
 
-   for (i = 0; i < operand_size; i++)  
+   for (i = 0; i < 8; i++)  
     GENLIB_LOINS("pi_sp", 
-	GENLIB_NAME("p%d", i + operand_size),   
+	GENLIB_NAME("p%d", i + 8),   
         GENLIB_NAME("operand_2[%d]", i), 
 	GENLIB_NAME("operand_2operand_2[%d]", i),   
          	  "cki", "vdde", "vdd", "vsse", "vss", 0);  
    
-   for (i = 0; i < result_size; i++)  
+   for (i = 0; i < 16; i++)  
     GENLIB_LOINS("po_sp", 
-	  GENLIB_NAME("p%d", i + result_size),   
+	  GENLIB_NAME("p%d", i + 2*8),   
           GENLIB_NAME("resultresult[%d]", i), 
 	  GENLIB_NAME("result[%d]", i),  
           "cki", "vdde", "vdd", "vsse", "vss", 0);  
@@ -54,26 +52,26 @@ int i;
   
   
   
-   GENLIB_LOINS("pi_sp", "p16",  
+   GENLIB_LOINS("pi_sp", "p35",  
          "start", "startstart",  
          "cki", "vdde", "vdd", "vsse", "vss", 0);  
      
-   GENLIB_LOINS("pi_sp", "p17",  
-         "reset_n", "reset_nreset_n",  
+   GENLIB_LOINS("pi_sp", "p32",  
+         "reset", "resetreset",  
          "cki", "vdde", "vdd", "vsse", "vss", 0);  
      
-   GENLIB_LOINS("pck_sp", "p18",  
+   GENLIB_LOINS("pck_sp", "p33",  
          "clk",  
          "cki", "vdde", "vdd", "vsse", "vss", 0);  
      
-   GENLIB_LOINS("po_sp", "p19",  
+   GENLIB_LOINS("po_sp", "p34",  
          "readyready", "ready",  
          "cki", "vdde", "vdd", "vsse", "vss", 0);  
      
    GENLIB_LOINS("divider", "divider",
 		"operand_1operand_1[7:0]", "operand_2operand_2[7:0]", 
 		"resultresult[15:0]", 
-   	     	"clock", "reset_nreset_n",  	      
+   	     	"clock", "resetreset",  	      
          	"startstart",  	     
          	"readyready", 
         	"vdd", "vss", 0);  

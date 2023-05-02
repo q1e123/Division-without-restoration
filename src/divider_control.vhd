@@ -4,10 +4,6 @@ USE IEEE.std_logic_arith.ALL;
 USE IEEE.std_logic_unsigned.ALL;
 
 entity divider_control is
-    generic (
-      OPERAND_SIZE : positive := 8;
-      RESULT_SIZE: positive := 16
-    );
     port ( clk        : in std_logic ;
            reset_n    : in std_logic ;
            start      : in std_logic ;
@@ -28,7 +24,7 @@ architecture divider_control_arch of divider_control is
     signal current_state  : state    ;
     signal next_state: state    ;
     signal valid    : std_logic;
-    signal count    : integer  ;
+    signal count    : integer;
     
     begin
     state_transision : process (reset_n, current_state, start, neg_p, count) begin 
@@ -143,7 +139,7 @@ architecture divider_control_arch of divider_control is
         if(( not clk'STABLE ) and ( clk = '1' )) then
             if (reset_n = '0') then count <= 0;
                 elsif (current_state = INIT) then 
-                    count <= OPERAND_SIZE;
+                    count <= 8;
                 elsif (current_state = SHIFT_P_STATE) then 
                     count <= count - 1;
             end if;
